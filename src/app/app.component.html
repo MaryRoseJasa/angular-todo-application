@@ -1,0 +1,242 @@
+<style>
+  .app-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.header {
+  color: #1169ee;
+  display: flex;
+  justify-content: center;
+  padding: 15px 20px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.source {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #c3e6cb;
+  text-align: center;
+}
+
+.todo-card, .todo-list-card {
+  margin-top: 5px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.add-button {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 25px;
+  background-color: #087af5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+::ng-deep .mat-list-field-infix {
+  background-color: #f0f4f8;
+  border-radius: 6px;
+}
+
+::ng-deep .mat-input-element {
+  color: #333;
+}
+::ng-deep mat-list-item{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+::ng-deep mat-checkbox {
+  margin-top: -2px;
+}
+.todo-container,
+.completed-container {
+  margin-top: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.todo-list-card,
+.completed-tasks-card {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border: 1px solid #b4b2b2;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  word-wrap: break-word;
+}
+.todo-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0; /* Ensures proper text truncation/wrap */
+}
+
+.todo-left span {
+  font-size: 16px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.4;
+  max-width: 100%;
+}
+
+.delete-btn {
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
+
+.delete-btn mat-icon {
+  background-color: white;
+  color: #ea0808;
+  border-radius: 50%;
+  font-size: 22px;
+  padding: 6px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+  box-shadow:  rgba(14, 14, 14, 0.2);
+}
+.delete-btn:hover mat-icon {
+  background-color: #f4c2c9;
+  box-shadow: none;
+}
+.completed-tasks-card {
+  margin-top: 20px;
+  padding: 20px;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.remove-all-btn {
+  font-size: 13px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 25px;
+  text-transform: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+</style>
+
+
+<div class="app-container">
+  <div class="header">
+    <h1>Angular Todo List Application</h1>
+  </div>
+
+  <mat-card class="todo-card">
+    <div *ngIf="showSuccess" class="success-message">
+      New todo item has been added successfully
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <input matInput [(ngModel)]="newTodoTitle" placeholder="Todo" />
+    </mat-form-field>
+
+    <button mat-raised-button class="add-button" (click)="addTodo()">
+      <mat-icon>add</mat-icon> Add to List
+    </button>
+  </mat-card>
+
+
+<div class="todo-container">
+  <mat-card class="todo-list-card">
+    <h3 class="section-title">Todo List</h3>
+    <div *ngFor="let todo of activeTodos" class="todo-item">
+      <div class="todo-left">
+        <mat-checkbox [checked]="todo.completed" (change)="toggleComplete(todo)">
+        </mat-checkbox>
+        <span [ngClass]="{ 'completed': todo.completed }">{{ todo.title }}</span>
+      </div>
+      <button mat-icon-button class="delete-btn" (click)="deleteTodo(todo.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>
+
+<div class="completed-container">
+  <mat-card class="completed-tasks-card">
+    <div class="card-header">
+      <h3 class="section-title">Completed Tasks</h3>
+      <button mat-stroked-button color="warn" class="remove-all-btn" (click)="removeAllCompleted()">
+        <mat-icon>delete_sweep</mat-icon> Remove All
+      </button>
+    </div>
+
+    <div *ngFor="let todo of completedTodos" class="todo-item">
+      <div class="todo-left">
+        <mat-checkbox [checked]="todo.completed" (change)="toggleComplete(todo)">
+        </mat-checkbox>
+        <span class="completed">{{ todo.title }}</span>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+
+
+
+
+
+
+
