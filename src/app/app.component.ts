@@ -27,18 +27,20 @@ interface Todo {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ 
-    RouterOutlet, 
-    CommonModule, 
+  imports: [
+    RouterOutlet,
+    CommonModule,
     MatCardModule,
-    HttpClientModule, 
-    FormsModule, 
+    HttpClientModule,
+    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatListModule,
     MatCheckboxModule,
-    MatIconModule],
+    MatIconModule,
+    TodoComponent
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
